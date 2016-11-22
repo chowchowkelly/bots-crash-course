@@ -29,9 +29,9 @@ const FacebookController = (function () {
             if(messagingEvent.message) { // Subscribes to Message Received Callback
 
               let senderID    = messagingEvent.sender.id,
-                  messageText = messagingEvent.message.text;
+                  textMessage = messagingEvent.message.text;
 
-              sender.sendTextMessage(senderID, messageText);
+              sender.sendTextMessage(senderID, textMessage);
 
               /*
               switch (messageText) {

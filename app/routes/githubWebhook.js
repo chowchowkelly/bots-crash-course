@@ -3,15 +3,22 @@
 // Dependencies.
 
 const express  = require('express');
+const sender   = require('../facebook/sender');
 
 //Routes for the Facebook Webhook API.
 
 let router = express.Router();
 
 const postWebhook = (event) => {
-  console.log(event);
-  console.log(event.body);
-  console.log(event.body.pusher);
+
+  let gitUser        = event.body.pusher,
+      repositoryName = event.body.repository.name,
+      textMessage;
+
+  textMessage = `${gitUser} just pushed to "${repositoryName}" repository`;
+
+  sender.sendTextMessage(1476968802330866, textMessage);
+
 }
 
 router.post('/', postWebhook);
