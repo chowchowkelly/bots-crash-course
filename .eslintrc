@@ -1,0 +1,18 @@
+{
+  // Extend existing configuration
+  "extends": ["eslint:recommended"],
+  // Enable ES6 support. If you want to use custom Babel
+  // features, you will need to enable a custom parser
+  // as described in a section below.
+  "env": {
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "quotes": [2, "single"],
+    "no-undef": 1,
+    "no-underscore-dangle": 1,
+    "no-console": 0,
+    "no-unused-vars": 0
+  }
+}
