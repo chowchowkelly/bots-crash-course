@@ -11,11 +11,11 @@ let router = express.Router();
 
 const postWebhook = (event) => {
 
-  let gitUser        = event.body.pusher,
+  let gitUser        = event.body.pusher.name,
       repositoryName = event.body.repository.name,
       textMessage;
 
-  textMessage = `${gitUser} just pushed to "${repositoryName}" repository`;
+  textMessage = `${gitUser} just pushed to "${repositoryName}" repository :o`;
 
   sender.sendTextMessage(1476968802330866, textMessage);
 
