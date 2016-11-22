@@ -31,34 +31,35 @@ const FacebookController = (function () {
               let senderID    = messagingEvent.sender.id,
                   textMessage = messagingEvent.message.text;
 
-              sender.sendTextMessage(senderID, textMessage);
-
-              /*
-              switch (messageText) {
-                case 'image':
-                  this.sendImageMessage(senderID);
+              switch (true) {
+                case /^weather/gi.test(textMessage):
+                  //weather.get("Guadalajara").then(sender.sendTextMessage);
+                  sender.sendTextMessage(senderID, "got weather");
                   break;
 
-                case 'button':
-                  this.sendButtonMessage(senderID);
+                case /^seen/gi.test(textMessage):
+                  sender.sendAction(senderID, "mark_seen");
                   break;
 
-                case 'generic':
-                  this.sendGenericMessage(senderID);
+                case /^write/gi.test(textMessage):
+                  sender.sendAction(senderID, "typing_on");
                   break;
 
-                case 'receipt':
-                  this.sendReceiptMessage(senderID);
+                case /^stopWriting/gi.test(textMessage):
+                  sender.sendAction(senderID, "typing_off");
                   break;
 
-                case 'image me':
-                  this.sendTextMessage(senderID, "jeje");
+                case /^silent/gi.test(textMessage):
+                  sender.sendNotification(senderID, "Silent Notification", "SILENT_PUSH");
+                  break;
+
+                case /^noPush/gi.test(textMessage):
+                  sender.sendNotification(senderID, "No Notification", "NO_PUSH");
                   break;
 
                 default:
-                  this.sendTextMessage(senderID, messageText);
+                  sender.sendTextMessage(senderID, textMessage);
               }
-              */
 
             } else if(messagingEvent.postback) { // Subscribes to Postback Received Callback
 

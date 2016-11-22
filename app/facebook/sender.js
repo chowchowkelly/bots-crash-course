@@ -25,6 +25,31 @@ const facebookSender = {
     return this.callSendAPI(messageData);
   },
 
+  sendAction(recipientId, action) {
+    let messageData = {
+      recipient: {
+        id: recipientId
+      },
+      sender_action: action
+    };
+
+    return this.callSendAPI(messageData);
+  },
+
+  sendNotification(recipientId, textMessage, notificationType) {
+    let messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        text: textMessage
+      },
+      notification_type: notificationType
+    };
+
+    return this.callSendAPI(messageData);
+  },
+
   callSendAPI: function(messageData) {
     const options = {
       uri: 'https://graph.facebook.com/v2.6/me/messages',
