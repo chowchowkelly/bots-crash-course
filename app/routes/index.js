@@ -3,6 +3,7 @@
 // Dependencies.
 
 const fbWebhookRouter = require('./facebookWebhook');
+const ghWebhookRouter = require('./githubWebhook');
 
 module.exports = function(app) {
 
@@ -13,5 +14,6 @@ module.exports = function(app) {
   });
 
   app.use('/facebook/webhook', fbWebhookRouter);
+  app.use('/github/webhook', ghWebhookRouter);
 
 };
