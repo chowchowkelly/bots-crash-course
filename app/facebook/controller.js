@@ -31,30 +31,74 @@ const FacebookController = (function () {
               let senderID    = messagingEvent.sender.id,
                   textMessage = messagingEvent.message.text;
 
+              console.log(messagingEvent);
               switch (true) {
+
                 case /^weather/gi.test(textMessage):
-                  //weather.get("Guadalajara").then(sender.sendTextMessage);
-                  sender.sendTextMessage(senderID, "got weather");
+                  //weather.get('Guadalajara').then(sender.sendTextMessage);
+                  sender.sendTextMessage(senderID, 'got weather');
                   break;
 
                 case /^seen/gi.test(textMessage):
-                  sender.sendAction(senderID, "mark_seen");
+                  sender.sendAction(senderID, 'mark_seen');
                   break;
 
                 case /^write/gi.test(textMessage):
-                  sender.sendAction(senderID, "typing_on");
+                  sender.sendAction(senderID, 'typing_on');
                   break;
 
                 case /^stopWriting/gi.test(textMessage):
-                  sender.sendAction(senderID, "typing_off");
+                  sender.sendAction(senderID, 'typing_off');
                   break;
 
                 case /^silent/gi.test(textMessage):
-                  sender.sendNotification(senderID, "Silent Notification", "SILENT_PUSH");
+                  sender.sendNotification(senderID, 'Silent Notification', 'SILENT_PUSH');
                   break;
 
                 case /^noPush/gi.test(textMessage):
-                  sender.sendNotification(senderID, "No Notification", "NO_PUSH");
+                  sender.sendNotification(senderID, 'No Notification', 'NO_PUSH');
+                  break;
+
+                case /^image/gi.test(textMessage):
+                  sender.sendImageMessage(senderID);
+                  break;
+
+                case /^audio/gi.test(textMessage):
+                  sender.sendAudioMessage(senderID);
+                  break;
+
+                case /^video/gi.test(textMessage):
+                  sender.sendAction(senderID, 'typing_on');
+                  sender.sendVideoMessage(senderID);
+                  break;
+
+                case /^file/gi.test(textMessage):
+                  sender.sendAction(senderID, 'typing_on');
+                  sender.sendFileMessage(senderID);
+                  break;
+
+                case /^button/gi.test(textMessage):
+                  sender.sendButtonMessage(senderID);
+                  break;
+
+                case /^generic/gi.test(textMessage):
+                  sender.sendGenericMessage(senderID);
+                  break;
+
+                case /^list/gi.test(textMessage):
+                  sender.sendListMessage(senderID);
+                  break;
+
+                case /^receipt/gi.test(textMessage):
+                  sender.sendReceiptMessage(senderID);
+                  break;
+
+                case /^airline/gi.test(textMessage):
+                  sender.sendAirlineMessage(senderID);
+                  break;
+
+                case /^quick/gi.test(textMessage):
+                  sender.sendQuickRepliesMessage(senderID);
                   break;
 
                 default:
@@ -63,11 +107,17 @@ const FacebookController = (function () {
 
             } else if(messagingEvent.postback) { // Subscribes to Postback Received Callback
 
+              console.log(messagingEvent.postback);
+
             } else if(messagingEvent.optin) { // 	Subscribes to Authentication Callback via the Send-to-Messenger Plugin
 
             } else if(messagingEvent.delivery) { // Subscribes to Message Delivered Callback
 
+              console.log('The User received our message!');
+
             } else if(messagingEvent.read) { // Subscribes to Message Read Callback
+
+              console.log('Leyo el mensaje!');
 
             } else {
               console.log('Webhook received unknown messagingEvent: ', messagingEvent);
