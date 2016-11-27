@@ -1,6 +1,10 @@
 const sender         = require('./sender');
+const request        = require('request-promise');
 
 const FacebookController = (function () {
+
+  let witToken = "RDMR2L4PCAGT4YRSFJMMFEO2L4RNVIM2";
+
   return {
 
     getWebhook: function(req, res) {
@@ -32,79 +36,95 @@ const FacebookController = (function () {
                   textMessage = messagingEvent.message.text,
                   city;
 
-              console.log(messagingEvent);
-              switch (true) {
 
-                case /^weather/gi.test(textMessage):
-                  city = textMessage.split(' ')[1];
-                  sender.sendWeatherMessage(senderID, city);
-                  break;
+              // Request to wit.ai with the text message
+              let options = {
+                uri: 'https://api.wit.ai/message',
+                qs: {
+                  q: textMessage,
+                  access_token: witToken
+                },
+                method: 'GET'
+              };
 
-                case /^seen/gi.test(textMessage):
-                  sender.sendAction(senderID, 'mark_seen');
-                  break;
+              request(options).then(result => {
+                console.log(result);
+              });
 
-                case /^write/gi.test(textMessage):
-                  sender.sendAction(senderID, 'typing_on');
-                  break;
 
-                case /^stopWriting/gi.test(textMessage):
-                  sender.sendAction(senderID, 'typing_off');
-                  break;
+              // console.log(messagingEvent);
+              // switch (true) {
 
-                case /^silent/gi.test(textMessage):
-                  sender.sendNotification(senderID, 'Silent Notification', 'SILENT_PUSH');
-                  break;
+              //   case /^weather/gi.test(textMessage):
+              //     city = textMessage.split(' ')[1];
+              //     sender.sendWeatherMessage(senderID, city);
+              //     break;
 
-                case /^noPush/gi.test(textMessage):
-                  sender.sendNotification(senderID, 'No Notification', 'NO_PUSH');
-                  break;
+              //   case /^seen/gi.test(textMessage):
+              //     sender.sendAction(senderID, 'mark_seen');
+              //     break;
 
-                case /^image/gi.test(textMessage):
-                  sender.sendImageMessage(senderID);
-                  break;
+              //   case /^write/gi.test(textMessage):
+              //     sender.sendAction(senderID, 'typing_on');
+              //     break;
 
-                case /^audio/gi.test(textMessage):
-                  sender.sendAudioMessage(senderID);
-                  break;
+              //   case /^stopWriting/gi.test(textMessage):
+              //     sender.sendAction(senderID, 'typing_off');
+              //     break;
 
-                case /^video/gi.test(textMessage):
-                  sender.sendAction(senderID, 'typing_on');
-                  sender.sendVideoMessage(senderID);
-                  break;
+              //   case /^silent/gi.test(textMessage):
+              //     sender.sendNotification(senderID, 'Silent Notification', 'SILENT_PUSH');
+              //     break;
 
-                case /^file/gi.test(textMessage):
-                  sender.sendAction(senderID, 'typing_on');
-                  sender.sendFileMessage(senderID);
-                  break;
+              //   case /^noPush/gi.test(textMessage):
+              //     sender.sendNotification(senderID, 'No Notification', 'NO_PUSH');
+              //     break;
 
-                case /^button/gi.test(textMessage):
-                  sender.sendButtonMessage(senderID);
-                  break;
+              //   case /^image/gi.test(textMessage):
+              //     sender.sendImageMessage(senderID);
+              //     break;
 
-                case /^generic/gi.test(textMessage):
-                  sender.sendGenericMessage(senderID);
-                  break;
+              //   case /^audio/gi.test(textMessage):
+              //     sender.sendAudioMessage(senderID);
+              //     break;
 
-                case /^list/gi.test(textMessage):
-                  sender.sendListMessage(senderID);
-                  break;
+              //   case /^video/gi.test(textMessage):
+              //     sender.sendAction(senderID, 'typing_on');
+              //     sender.sendVideoMessage(senderID);
+              //     break;
 
-                case /^receipt/gi.test(textMessage):
-                  sender.sendReceiptMessage(senderID);
-                  break;
+              //   case /^file/gi.test(textMessage):
+              //     sender.sendAction(senderID, 'typing_on');
+              //     sender.sendFileMessage(senderID);
+              //     break;
 
-                case /^airline/gi.test(textMessage):
-                  sender.sendAirlineMessage(senderID);
-                  break;
+              //   case /^button/gi.test(textMessage):
+              //     sender.sendButtonMessage(senderID);
+              //     break;
 
-                case /^quick/gi.test(textMessage):
-                  sender.sendQuickRepliesMessage(senderID);
-                  break;
+              //   case /^generic/gi.test(textMessage):
+              //     sender.sendGenericMessage(senderID);
+              //     break;
 
-                default:
-                  sender.sendTextMessage(senderID, textMessage);
-              }
+              //   case /^list/gi.test(textMessage):
+              //     sender.sendListMessage(senderID);
+              //     break;
+
+              //   case /^receipt/gi.test(textMessage):
+              //     sender.sendReceiptMessage(senderID);
+              //     break;
+
+              //   case /^airline/gi.test(textMessage):
+              //     sender.sendAirlineMessage(senderID);
+              //     break;
+
+              //   case /^quick/gi.test(textMessage):
+              //     sender.sendQuickRepliesMessage(senderID);
+              //     break;
+
+              //   default:
+              //     sender.sendTextMessage(senderID, textMessage);
+              // }
 
             } else if(messagingEvent.postback) { // Subscribes to Postback Received Callback
 
