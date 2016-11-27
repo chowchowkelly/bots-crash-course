@@ -407,6 +407,41 @@ const facebookSender = {
     return this.callSendAPI(messageData);
   },
 
+  sendWeatherMessage: function(recipientId, city) {
+    let promise,
+        options,
+        messageData;
+
+    messageData = {
+      recipient: {
+        id: recipientId
+      },
+      message: {
+        text: ''
+      }
+    };
+
+    options = {
+      uri: 'http://api.openweathermap.org/data/2.5/weather',
+      qs: { q:  city,
+            APPID: '74590bdf6dc5d65d482df8e24d6dbae5'
+      },
+      method: 'GET',
+      json: true
+    };
+
+    rp(options).then(res => {
+      console.log(res);
+
+      let weather = res.weather[0].main,
+          temp    = res.main.temp;
+
+      messageData.message.text = `The weather in ${city} is ${weather} and has a temperature of ${temp}`;
+
+      this.callSendAPI(messageData);
+    });
+  },
+
   callSendAPI: function(messageData) {
     const options = {
       uri: 'https://graph.facebook.com/v2.6/me/messages',

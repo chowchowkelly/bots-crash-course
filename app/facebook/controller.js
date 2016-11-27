@@ -26,17 +26,18 @@ const FacebookController = (function () {
 
           // Iterate over each messaging event
           pageEntry.messaging.forEach(function(messagingEvent) {
-            if(messagingEvent.message) { // Subscribes to Message Received Callback
+            if (messagingEvent.message) { // Subscribes to Message Received Callback
 
               let senderID    = messagingEvent.sender.id,
-                  textMessage = messagingEvent.message.text;
+                  textMessage = messagingEvent.message.text,
+                  city;
 
               console.log(messagingEvent);
               switch (true) {
 
                 case /^weather/gi.test(textMessage):
-                  //weather.get('Guadalajara').then(sender.sendTextMessage);
-                  sender.sendTextMessage(senderID, 'got weather');
+                  city = textMessage.split(' ')[1];
+                  sender.sendWeatherMessage(senderID, city);
                   break;
 
                 case /^seen/gi.test(textMessage):
